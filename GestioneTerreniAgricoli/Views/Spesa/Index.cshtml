@@ -1,0 +1,88 @@
+﻿@model IEnumerable<GestioneTerreniAgricoli.Models.Spesa>
+
+@{
+    ViewData["Title"] = "Spese";
+}
+
+<h1>Spese</h1>
+
+<p>
+    <a asp-action="Create">Aggiungi Spesa</a>
+</p>
+
+<form asp-controller="Spesa" asp-action="Index">
+    <p>
+        <select name="searchAttribute" id="searchAttribute">
+            <option value="">Tutti</option>
+            <option value="Descrizione">Descrizione</option>
+            <option value="Importo">Importo</option>
+            @* <option value="DataAcquisto">Data Acquisto</option> *@
+            <option value="Lavoro">Lavoro</option>
+        </select>
+        <input type="text" name="searchString" id="searchString" style="display:none;" />
+        <span id="decimalFields" style="display:none;">
+            Importo minimo: <input type="text" name="minImporto" />
+            Importo massimo: <input type="text" name="maxImporto" />
+        </span>
+        <input type="submit" value="Filtra" id="submitButton" />
+    </p>
+</form>
+
+<script>
+    document.getElementById('searchAttribute').addEventListener('change', function () {
+        var decimalFields = document.getElementById('decimalFields');
+        var searchString = document.getElementById('searchString');
+
+        if (this.value === 'Importo') {
+            decimalFields.style.display = 'inline';
+            searchString.style.display = 'none';
+        } else {
+            decimalFields.style.display = 'none';
+            searchString.style.display = 'inline';
+        }
+    });
+</script>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Descrizione)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Importo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataAquisto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lavoro)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descrizione)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Importo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataAquisto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lavoro.Descrizione)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdSpesa">Modifica</a> |
+                <a asp-action="Details" asp-route-id="@item.IdSpesa">Dettagli</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdSpesa" class="delete-link">Cancella</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

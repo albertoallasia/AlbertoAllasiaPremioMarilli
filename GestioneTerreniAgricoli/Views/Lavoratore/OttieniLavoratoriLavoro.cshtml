@@ -1,0 +1,50 @@
+﻿@model IEnumerable<GestioneTerreniAgricoli.Models.Lavoratore>
+
+@{
+    ViewData["Title"] = "Lavoratori";
+}
+
+<div class="page-title">
+    <h1>Lavoratori</h1>
+</div>
+
+<form asp-controller="Lavoratore" asp-action="OttieniLavoratoriLavoro">
+    <p>
+        <select name="searchAttribute" id="searchAttribute">
+            <option value="">Tutti</option>
+            <option value="CodiceFiscale">Codice Fiscale</option>
+            <option value="Ruolo">Ruolo</option>
+            <option value="Nome">Nome</option>
+            <option value="Cognome">Cognome</option>
+            <option value="DataNascita">Data di Nascita</option>
+        </select>
+        <input type="text" name="searchString" id="searchString" style="display:none;" />
+        <input type="submit" value="Filtra" id="submitButton" />
+    </p>
+</form>
+
+<script>
+    document.getElementById('searchAttribute').addEventListener('change', function () {
+        var searchString = document.getElementById('searchString');
+        if (this.value === '') {
+            searchString.style.display = 'none';
+        } else {
+            searchString.style.display = 'inline';
+        }
+    });
+</script>
+
+<div class="place-columns">
+    @foreach (var lavoratore in Model)
+    {
+        @Html.Partial("_LavoratoreCardSenzaLink", lavoratore)
+    }
+</div>
+
+<style>
+    .place-columns {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px; /* Spazio tra le schede */
+    }
+</style>

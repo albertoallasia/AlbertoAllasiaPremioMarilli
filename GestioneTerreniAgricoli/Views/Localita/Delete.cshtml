@@ -1,0 +1,46 @@
+﻿@model GestioneTerreniAgricoli.Models.Localita
+
+@{
+    ViewData["Title"] = "Elimina Località";
+}
+
+<h1>Elimina Località</h1>
+
+<!-- Mostra l'avviso se ci sono terreni associati -->
+@if (ViewData["AlertMessage"] != null)
+{
+    <div class="alert alert-warning">
+        @ViewData["AlertMessage"]
+    </div>
+}
+
+<h3>Sei sicuro di voler eliminare questa località?</h3>
+<div>
+    <h4>Località</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.CAP)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.CAP)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.NomeComune)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.NomeComune)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Address)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Address)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.NumeroAppezzamento)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.NumeroAppezzamento)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Latitude)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Latitude)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Longitude)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Longitude)</dd>
+    </dl>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="IdLocalita" />
+        <input type="submit" value="Sì, elimina" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-secondary">Annulla</a>
+    </form>
+</div>

@@ -1,0 +1,146 @@
+﻿@model GestioneTerreniAgricoli.Models.Lavoro
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Lavoro</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdLavoro" />
+            <div class="form-group">
+                <label asp-for="Descrizione" class="control-label"></label>
+                <input asp-for="Descrizione" class="form-control" />
+                <span asp-validation-for="Descrizione" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataInizioLavoro" class="control-label"></label>
+                <input asp-for="DataInizioLavoro" class="form-control" />
+                <span asp-validation-for="DataInizioLavoro" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataFineLavoro" class="control-label"></label>
+                <input asp-for="DataFineLavoro" class="form-control" />
+                <span asp-validation-for="DataFineLavoro" class="text-danger"></span>
+            </div>
+            
+            <!-- Selezione lavoratori -->
+            <div class="form-group">
+                <label>Seleziona lavoratori:</label>
+                <button type="button" class="btn btn-secondary" onclick="toggleModal('lavoratoriModal')">Apri elenco</button>
+                <!-- Modale per i lavoratori -->
+                <div id="lavoratoriModal" class="modal" style="display: none;">
+                    <div class="modal-content">
+                        <span class="close" onclick="toggleModal('lavoratoriModal')">&times;</span>
+                        <h4>Seleziona lavoratori</h4>
+                        <div>
+                            @foreach (var lavoratore in ViewBag.Lavoratori)
+                            {
+                                <div>
+                                    <input type="checkbox" name="SelectedLavoratori" value="@lavoratore.IdLavoratore" /> @lavoratore.NomeCognome
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Selezione coltivazioni -->
+            <div class="form-group">
+                <label>Seleziona coltivazioni:</label>
+                <button type="button" class="btn btn-secondary" onclick="toggleModal('coltivazioniModal')">Apri elenco</button>
+                <!-- Modale per le coltivazioni -->
+                <div id="coltivazioniModal" class="modal" style="display: none;">
+                    <div class="modal-content">
+                        <span class="close" onclick="toggleModal('coltivazioniModal')">&times;</span>
+                        <h4>Seleziona coltivazioni</h4>
+                        <div>
+                            @foreach (var coltivazione in ViewBag.Coltivazioni)
+                            {
+                                <div>
+                                    <input type="checkbox" name="SelectedColtivazioni" value="@coltivazione.IdColtivazione" /> @coltivazione.NomeColtivazione
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<style>
+    /* Stili per le modali */
+    .modal {
+        position: absolute;
+        top: 200px;
+        right: 100px;
+        bottom: 0;
+        left: 700px;
+        z-index: 10040;
+        max-width: 500px;
+        overflow-y: auto;
+    }
+
+    /* Stili per il contenuto della modale */
+    .modal-content {
+        padding: 16px;
+        /* Bordi arrotondati */
+        border-radius: 8px;
+        /* Colore di sfondo per il contenuto */
+        background-color: #f9f9f9;
+        /* Ulteriore ombreggiatura per il contenuto */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Stile per il pulsante di chiusura */
+    .modal .close {
+        cursor: pointer;
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        font-size: 24px;
+        color: #555;
+    }
+
+    /* Stile per i pulsanti */
+    button {
+        margin: 8px;
+        padding: 8px 16px;
+        border-radius: 4px;
+        border: none;
+        color: white;
+        background-color: #007bff;
+        cursor: pointer;
+    }
+
+</style>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function toggleModal(modalId) {
+            var modal = document.getElementById(modalId);
+            if (modal.style.display === "none") {
+                modal.style.display = "block";
+            } else {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+}

@@ -1,0 +1,37 @@
+﻿@model GestioneTerreniAgricoli.Models.Coltura
+
+<div class="card">
+    <div class="card-header">
+        @if (Model.NomeColtura.Contains("DKC"))
+        {
+            // Mostra un'immagine specifica se NomeColtura contiene "DKC"
+            <img src="~/imagesSementi/dekalb_logo.jpg" alt="DKC Image" style="width:30%">
+        }
+        else if (Model.NomeColtura.Contains("SY"))
+        {
+            <img src="~/imagesSementi/sygenta_logo.jpeg" alt="DKC Image" style="width:30%">
+        }
+        else if (Model.NomeColtura.Contains("Pioneer"))
+        {
+            <img src="~/imagesSementi/pioneer_logo.jpg" alt="DKC Image" style="width:30%">
+        }
+        else
+        {
+            // Mostra un'altra immagine se NomeColtura non contiene "DKC"
+            <img src="~/imagesSementi/mas_seeds_logo.jpg" alt="Other Image" style="width:30%">
+        }
+        <div class="card-title">
+            @Model.NomeColtura
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="card-description">
+            @Model.Descrizione
+        </div>
+    </div>
+    <div class="card-footer">
+        <a asp-action="Edit" asp-route-id="@Model.IdColtura">Modifica</a> |
+        <a asp-action="Details" asp-route-id="@Model.IdColtura">Dettagli</a> |
+        <a asp-action="Delete" asp-route-id="@Model.IdColtura" class="delete-link">Cancella</a>
+    </div>
+</div>

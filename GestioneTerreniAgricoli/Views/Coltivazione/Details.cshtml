@@ -1,0 +1,48 @@
+﻿@model GestioneTerreniAgricoli.Models.Coltivazione
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Coltivazione</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NomeColtivazione)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NomeColtivazione)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.QuantitaProdotta)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.QuantitaProdotta)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ColtivazioneTerminata)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ColtivazioneTerminata)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Coltura)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Coltura.NomeColtura)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Terreno)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Terreno.NomeTerreno)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.IdColtivazione">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

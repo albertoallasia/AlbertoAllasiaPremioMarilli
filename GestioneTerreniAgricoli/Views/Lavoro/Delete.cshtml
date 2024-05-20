@@ -1,0 +1,40 @@
+﻿@model GestioneTerreniAgricoli.Models.Lavoro
+
+@{
+    ViewData["Title"] = "Elimina Lavoro";
+}
+
+<h1>Elimina Lavoro</h1>
+
+<!-- Mostra un avviso se ci sono entità associate -->
+@if (ViewData["AlertMessages"] != null)
+{
+    foreach (var message in (List<string>)ViewData["AlertMessages"])
+    {
+        <div class="alert alert-warning">
+            @message
+        </div>
+    }
+}
+
+<h3>Sei sicuro di voler eliminare questo lavoro?</h3>
+<div>
+    <h4>Lavoro</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Descrizione)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Descrizione)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.DataInizioLavoro)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.DataInizioLavoro)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.DataFineLavoro)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.DataFineLavoro)</dd>
+    </dl>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="IdLavoro" />
+        <input type="submit" value="Sì, elimina" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-secondary">Annulla</a>
+    </form>
+</div>

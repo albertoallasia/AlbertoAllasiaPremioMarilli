@@ -1,0 +1,178 @@
+﻿@model GestioneTerreniAgricoli.Models.Terreno
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Terreno</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdTerreno" />
+
+            <div class="form-group">
+                <label asp-for="NomeTerreno" class="control-label"></label>
+                <input asp-for="NomeTerreno" class="form-control" />
+                <span asp-validation-for="NomeTerreno" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="TipologiaTerreno" class="control-label"></label>
+                <input asp-for="TipologiaTerreno" class="form-control" />
+                <span asp-validation-for="TipologiaTerreno" class="text-danger"></span>
+            </div>
+
+            <!-- Opzioni per selezionare il metodo di inserimento della metratura -->
+            <div class="form-check">
+                <input type="radio" id="metodoTextbar" name="metodoMetratura" value="textbar" class="form-check-input" checked>
+                <label for="metodoTextbar" class="form-check-label">Inserisci Valore Manualmente</label>
+            </div>
+            <div class="form-check">
+                <input type="radio" id="metodoGiornate" name="metodoMetratura" value="giornate" class="form-check-input">
+                <label for="metodoGiornate" class="form-check-label">Inserisci con Giornate Piemontesi</label>
+            </div>
+
+            <!-- Campo per inserire la metratura -->
+            <div id="metodoTextbarDiv" class="form-group" style="display: block;">
+                <label>Inserisci Metratura Terreno:</label>
+                <input asp-for="Metratura" type="number" class="form-control" id="inputMetratura" />
+                <span asp-validation-for="Metratura" class="text-danger"></span>
+            </div>
+
+            <!-- Sezione nascosta di selezione delle città -->
+            <div id="cittaSelezione" style="display: none;">
+                <label for="citta">Seleziona Città:</label>
+                <select id="citta" class="form-control"></select>
+
+                <!-- Campo di input numerico per inserire il numero di giornate -->
+                <label for="numeroGiornate">Inserisci Numero di Giornate:</label>
+                <input type="number" id="numeroGiornate" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label asp-for="LocalitaId" class="control-label"></label>
+                <select asp-for="LocalitaId" class="form-control" asp-items="ViewBag.LocalitaId"></select>
+                <span asp-validation-for="LocalitaId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
+    <script>
+        // Assegna gli elementi del DOM a variabili
+        const metodoTextbar = document.getElementById('metodoTextbar');
+        const metodoGiornate = document.getElementById('metodoGiornate');
+        const inputMetratura = document.getElementById('inputMetratura');
+        const metodoTextbarDiv = document.getElementById('metodoTextbarDiv');
+        const cittaSelezione = document.getElementById('cittaSelezione');
+        const selectCitta = document.getElementById('citta');
+        const numeroGiornate = document.getElementById('numeroGiornate');
+
+        // Mappa per memorizzare i valori delle giornate piemontesi per ciascuna città
+        const valoriGiornate = new Map();
+
+        // Funzione per caricare il CSV utilizzando Papa Parse
+        async function caricaCSV() {
+            try {
+                const response = await fetch('/csv/valoreGiornatePiemontesi.csv');
+
+                // Verifica se la risposta è ok (status 200)
+                if (!response.ok) {
+                    throw new Error('Errore di fetch: ' + response.status);
+                }
+
+                const csvText = await response.text();
+
+                // Analizza il CSV con Papa Parse
+                const results = Papa.parse(csvText, {
+                    header: false,
+                    delimiter: ';',
+                    skipEmptyLines: true
+                });
+
+                // Itera sulle righe del CSV per aggiungere i dati alla mappa
+                results.data.forEach(row => {
+                    const [nomeComune, valoreGiornata] = row;
+
+                    // Rimuovi eventuali virgolette dai valori
+                    const cleanedNomeComune = nomeComune.replace(/^"|"$/g, '');
+                    const cleanedValoreGiornata = valoreGiornata.replace(/^"|"$/g, '');
+
+                    // Converti la stringa di valore giornata in un numero, considerando la virgola come separatore decimale
+                    const valoreGiornataNumero = parseFloat(cleanedValoreGiornata.replace(',', '.'));
+
+                    // Aggiungi i dati alla mappa
+                    valoriGiornate.set(cleanedNomeComune, valoreGiornataNumero);
+                });
+
+                // Aggiorna la select delle città con i comuni presenti nel CSV
+                aggiornaSelectCitta();
+            } catch (error) {
+                console.error('Errore durante il caricamento del CSV:', error);
+            }
+        }
+
+        // Funzione per aggiornare la select delle città con i dati della mappa
+        function aggiornaSelectCitta() {
+            selectCitta.innerHTML = '';
+
+            valoriGiornate.forEach((valore, comune) => {
+                const option = document.createElement('option');
+                option.value = comune;
+                option.textContent = comune;
+                selectCitta.appendChild(option);
+            });
+
+            selectCitta.addEventListener('change', calcolaValoreTotale);
+            numeroGiornate.addEventListener('input', calcolaValoreTotale);
+        }
+
+        // Funzione per calcolare il valore totale della metratura
+        function calcolaValoreTotale() {
+            const comuneSelezionato = selectCitta.value;
+            const valoreGiornata = valoriGiornate.get(comuneSelezionato);
+
+            const numeroGiornateInserito = parseFloat(numeroGiornate.value);
+            const valoreTotale = numeroGiornateInserito * valoreGiornata;
+
+            inputMetratura.value = isNaN(valoreTotale) ? '' : valoreTotale.toFixed(2);
+        }
+
+        // Funzione per gestire la visibilità degli elementi in base all'opzione selezionata
+        function handleMetodoChange() {
+            if (metodoTextbar.checked) {
+                metodoTextbarDiv.style.display = 'block';
+                cittaSelezione.style.display = 'none';
+            } else if (metodoGiornate.checked) {
+                metodoTextbarDiv.style.display = 'none';
+                cittaSelezione.style.display = 'block';
+            }
+        }
+
+        metodoTextbar.addEventListener('change', handleMetodoChange);
+        metodoGiornate.addEventListener('change', handleMetodoChange);
+
+        handleMetodoChange();
+
+        document.addEventListener('DOMContentLoaded', caricaCSV);
+    </script>
+}

@@ -1,0 +1,61 @@
+﻿@model IEnumerable<GestioneTerreniAgricoli.Models.TabellaColtivazioneLavoro>
+
+@{
+    ViewData["Title"] = "Lavori effettuati nella Coltivazione";
+}
+
+<h1>Lavori effettuati nella Coltivazione</h1>
+
+@* <p>
+    <a asp-action="Create">Assegna Lavoro ad una Coltivazione</a>
+</p> *@
+
+<form asp-controller="TabellaColtivazioneLavoro" asp-action="IndexLavorazioni" method="get">
+    <p>
+        <select name="searchAttribute" id="searchAttribute">
+            <option value="">Tutti</option>
+            <option value="Coltivazione">Coltivazione</option>
+            <option value="Lavoro">Lavoro</option>
+        </select>
+        <input type="text" name="searchString" id="searchString" style="display: none;" />
+        <input type="submit" value="Filtra" />
+    </p>
+</form>
+
+<script>
+    document.getElementById('searchAttribute').addEventListener('change', function () {
+        var searchString = document.getElementById('searchString');
+        if (this.value !== '') {
+            searchString.style.display = 'inline';
+        } else {
+            searchString.style.display = 'none';
+        }
+    });
+</script>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Lavoro.Descrizione)</th>
+            @* <th></th> *@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Lavoro.Descrizione)
+                </td>
+                @* Se vuoi aggiungere azioni di modifica, dettagli o cancellazione, puoi decommentare la sezione successiva *@
+                <!--
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.IdTabellaColtivazioneLavoro">Modifica</a> |
+                    <a asp-action="Details" asp-route-id="@item.IdTabellaColtivazioneLavoro">Dettagli</a> |
+                    <a asp-action="Delete" asp-route-id="@item.IdTabellaColtivazioneLavoro">Cancella</a>
+                </td>
+                -->
+            </tr>
+        }
+    </tbody>
+</table>

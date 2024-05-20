@@ -1,0 +1,154 @@
+﻿@model IEnumerable<GestioneTerreniAgricoli.Models.Localita>
+
+@{
+    ViewData["Title"] = "Località";
+}
+
+<h1>Località</h1>
+
+<p>
+    <a asp-action="Create">Aggiungi Località</a>
+</p>
+
+<form asp-controller="Localita" asp-action="Index">
+    <p>
+        <select name="searchAttribute" id="searchAttribute">
+            <option value="">Tutti</option>
+            <option value="CAP">CAP</option>
+            <option value="NomeComune">Nome Comune</option>
+            <option value="Address">Indirizzo</option>
+            <option value="NumeroAppezzamento">Numero Appezzamento</option>
+            <option value="Latitude">Latitudine</option>
+            <option value="Longitude">Longitudine</option>
+            <option value="LatitudineLongitude">Latitudine e Longitudine</option>
+        </select>
+        <input type="text" name="searchString" id="searchString" style="display:none;" />
+        <div id="latitudeLongitudeFields" style="display:none;">
+            <span id="latitudeFields" style="display:inline;">
+                Latitudine minima: <input type="text" name="minLatitude" /><br>
+                Latitudine massima: <input type="text" name="maxLatitude" /><br>
+            </span>
+            <span id="longitudeFields" style="display:inline;">
+                Longitudine minima: <input type="text" name="minLongitude" /><br>
+                Longitudine massima: <input type="text" name="maxLongitude" /><br>
+            </span>
+        </div>
+        <input type="submit" value="Filtra" id="submitButton" />
+    </p>
+</form>
+
+<script>
+    document.getElementById('searchAttribute').addEventListener('change', function () {
+        var latitudeLongitudeFields = document.getElementById('latitudeLongitudeFields');
+        var latitudeFields = document.getElementById('latitudeFields');
+        var longitudeFields = document.getElementById('longitudeFields');
+        var searchString = document.getElementById('searchString');
+
+        if (this.value === 'Latitude') {
+            latitudeFields.style.display = 'inline';
+            longitudeFields.style.display = 'none';
+            latitudeLongitudeFields.style.display = 'inline';
+            searchString.style.display = 'none';
+        } else if (this.value === 'Longitude') {
+            latitudeFields.style.display = 'none';
+            longitudeFields.style.display = 'inline';
+            latitudeLongitudeFields.style.display = 'inline';
+            searchString.style.display = 'none';
+        } else if (this.value === 'LatitudineLongitude') {
+            latitudeFields.style.display = 'inline';
+            longitudeFields.style.display = 'inline';
+            latitudeLongitudeFields.style.display = 'inline';
+            searchString.style.display = 'none';
+        } else if (this.value === '') {
+            latitudeFields.style.display = 'none';
+            longitudeFields.style.display = 'none';
+            latitudeLongitudeFields.style.display = 'none';
+            searchString.style.display = 'none';
+        } else {
+            latitudeFields.style.display = 'none';
+            longitudeFields.style.display = 'none';
+            latitudeLongitudeFields.style.display = 'none';
+            searchString.style.display = 'inline';
+        }
+    });
+</script>
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CAP)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NomeComune)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumeroAppezzamento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Latitude)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Longitude)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CAP)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NomeComune)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumeroAppezzamento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Latitude)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Longitude)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdLocalita">Modifica</a> |
+                <a asp-action="Details" asp-route-id="@item.IdLocalita">Dettagli</a> |
+                    <a asp-action="Delete" asp-route-id="@item.IdLocalita" class="delete-link">Cancella</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<script src="~/lib/leaflet/leaflet.js"></script>
+<script src="~/lib/leaflet/leaflet.min.js"></script>
+
+<div id="map" style="height:400px;width:100%"></div>
+
+<script>
+    var map = L.map('map').setView([44.0, 8.0], 8);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    var jsModel = @Html.Raw(Json.Serialize(Model));
+    console.log(jsModel);
+
+    for (i in jsModel) {
+        item = jsModel[i];
+        L.marker([item.latitude, item.longitude]).addTo(map)
+            .bindPopup(item.nomeComune + '<br>' + item.address)
+            .openPopup();
+    }
+
+</script>

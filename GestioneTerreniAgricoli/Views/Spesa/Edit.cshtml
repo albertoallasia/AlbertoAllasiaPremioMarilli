@@ -1,0 +1,49 @@
+﻿@model GestioneTerreniAgricoli.Models.Spesa
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Spesa</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdSpesa" />
+            <div class="form-group">
+                <label asp-for="Descrizione" class="control-label"></label>
+                <input asp-for="Descrizione" class="form-control" />
+                <span asp-validation-for="Descrizione" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Importo" class="control-label"></label>
+                <input asp-for="Importo" type="number" class="form-control" />
+                <span asp-validation-for="Importo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataAquisto" class="control-label"></label>
+                <input asp-for="DataAquisto" class="form-control" />
+                <span asp-validation-for="DataAquisto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LavoroId" class="control-label"></label>
+                <select asp-for="LavoroId" class="form-control" asp-items="ViewBag.LavoroId"></select>
+                <span asp-validation-for="LavoroId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

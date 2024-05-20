@@ -1,0 +1,67 @@
+﻿@model IEnumerable<GestioneTerreniAgricoli.Models.TabellaLavoroLavoratore>
+
+@{
+    ViewData["Title"] = "Lavori assegnati ai Lavoratori";
+}
+
+<h1>Lavoratori coinvolti</h1>
+
+@* <p>
+    <a asp-action="Create">Assegna Lavoro ad un Lavoratore</a>
+</p> *@
+
+<form asp-controller="TabellaLavoroLavoratore" asp-action="Index" method="get">
+    <p>
+        <select name="searchAttribute" id="searchAttribute">
+            <option value="">Tutti</option>
+            <option value="Lavoratore">Lavoratore</option>
+            <option value="Lavoro">Lavoro</option>
+        </select>
+        <input type="text" name="searchString" id="searchString" style="display: none;" />
+        <input type="submit" value="Filtra" />
+    </p>
+</form>
+
+<script>
+    document.getElementById('searchAttribute').addEventListener('change', function () {
+        var searchString = document.getElementById('searchString');
+        if (this.value !== '') {
+            searchString.style.display = 'inline';
+        } else {
+            searchString.style.display = 'none';
+        }
+    });
+</script>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Lavoratore)
+            </th>
+            @* Se non vuoi mostrare la colonna lavoro, rimuovi la riga successiva *@
+            <!-- @*<th>@Html.DisplayNameFor(model => model.Lavoro)</th>*@ -->
+            @* <th></th> *@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Lavoratore.NomeCognome)
+                </td>
+                @* Se non vuoi mostrare la colonna lavoro, rimuovi la riga successiva *@
+                <!-- @*<td>@Html.DisplayFor(modelItem => item.Lavoro.Descrizione)</td>*@ -->
+                @* Se vuoi aggiungere azioni di modifica, dettagli o cancellazione, puoi decommentare la sezione successiva *@
+                <!--
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.IdTabellaLavoroLavoratore">Modifica</a> |
+                    <a asp-action="Details" asp-route-id="@item.IdTabellaLavoroLavoratore">Dettagli</a> |
+                    <a asp-action="Delete" asp-route-id="@item.IdTabellaLavoroLavoratore">Cancella</a>
+                </td>
+                -->
+            </tr>
+        }
+    </tbody>
+</table>

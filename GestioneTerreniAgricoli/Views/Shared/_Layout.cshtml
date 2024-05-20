@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - GestioneTerreniAgricoli</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/GestioneTerreniAgricoli.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/leaflet/leaflet.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/leaflet/leaflet.min.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">GestioneTerreniAgricoli</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <select class="form-select" onchange="navigateToPage(this)" style="width:300px">
+                        <option value="" selected disabled>Scegli la Pagina</option>
+                        <option value="/Localita/Index">Località</option>
+                        <option value="/Terreno/Index">Terreno</option>
+                        <option value="/Coltura/Index">Coltura</option>
+                        <option value="/Coltivazione/Index">Coltivazione</option>
+                        <option value="/Lavoro/Index">Lavoro</option>
+                        <option value="/Lavoratore/Index">Lavoratore</option>
+                        <option value="/Spesa/Index">Spesa</option>
+                    </select>
+
+                    <script>
+                        function navigateToPage(selectElement) {
+                            var url = selectElement.value;
+                            if (url) {
+                                window.location.href = url;
+                            }
+                        }
+                    </script>
+
+                    
+
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                        <partial name="_LoginPartial.cshtml" />
+                    </div>
+                    <img src="https://img.freepik.com/premium-vector/wheat-grain-icon-vector-logo-design-simple-wheat-grain-vector-icon-logo-design_617472-2735.jpg" alt="Logo" style="width: 3%; height: auto;" class="navbar-brand">
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 - GestioneTerreniAgricoli - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            - <a asp-area="" asp-controller="Home" asp-action="ConsigliUtilizzoGTA">Consigli di Utilizzo Software GTA</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
+<style>
+
+    body {
+        font-family: 'Oswald', sans-serif;
+    }
+
+    /* Stile per la tabella */
+    table {
+        font-family: 'Oswald', sans-serif;
+        width: 100%; /* Imposta la larghezza della tabella */
+        border-collapse: separate; /* Mantiene separati i bordi delle celle */
+        margin-bottom: 1rem; /* Spaziatura sotto la tabella */
+        border: 2px solid #dee2e6; /* Bordo intorno alla tabella */
+        border-radius: 12px; /* Bordi arrotondati per l'intera tabella */
+        overflow: hidden; /* Nasconde i bordi che eccedono il contenitore */
+    }
+
+        /* Stile per le celle della tabella */
+        table th, table td {
+            font-family: 'Oswald', sans-serif;
+            padding: 0.75rem; /* Spaziatura all'interno delle celle */
+            border: 1px solid #dee2e6; /* Bordo attorno alle celle */
+        }
+
+        /* Stile per l'intestazione delle colonne */
+        table thead {
+            background-color: #007BFF; /* Colore azzurro per l'intestazione */
+            color: white; /* Colore del testo bianco */
+        }
+
+        /* Arrotonda gli angoli della tabella */
+        table th:first-child, table td:first-child {
+            border-top-left-radius: 12px; /* Arrotonda l'angolo in alto a sinistra */
+            border-bottom-left-radius: 12px; /* Arrotonda l'angolo in basso a sinistra */
+        }
+
+        table th:last-child, table td:last-child {
+            border-top-right-radius: 12px; /* Arrotonda l'angolo in alto a destra */
+            border-bottom-right-radius: 12px; /* Arrotonda l'angolo in basso a destra */
+        }
+
+    /* Stile per il link di cancellazione */
+    .delete-link {
+        color: red; /* Imposta il colore del link a rosso */
+        text-decoration: underline; /* Sottolinea il link */
+    }
+
+        /* Facoltativo: aggiungi un effetto di hover per il link di cancellazione */
+        .delete-link:hover {
+            color: darkred; /* Colore più scuro durante il passaggio del mouse */
+        }
+
+</style>

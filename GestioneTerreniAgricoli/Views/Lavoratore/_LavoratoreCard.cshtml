@@ -1,0 +1,32 @@
+﻿@model GestioneTerreniAgricoli.Models.Lavoratore
+
+<div class="card">
+    <div class="card-header">
+        <img src="~/imagesUomo/person_logo.jpg" alt="PER Image" style="width:30%">
+        <div class="card-title">
+            @Model.NomeCognome
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="card-description">
+            @Model.CodiceFiscale
+        </div>
+        <div class="card-description">
+            @Model.Ruolo
+        </div>
+        <div class="card-description">
+            @Model.Nome
+        </div>
+        <div class="card-description">
+            @Model.Cognome
+        </div>
+        <div class="card-description">
+            @Model.DataNascita.ToString("dd/MM/yyyy")
+        </div>
+    </div>
+    <div class="card-footer">
+        <a asp-action="Edit" asp-route-id="@Model.IdLavoratore">Modifica</a> |
+        <a asp-action="Details" asp-route-id="@Model.IdLavoratore">Dettagli</a> |
+        <a asp-action="Delete" asp-route-id="@Model.IdLavoratore" class="delete-link">Cancella</a>
+    </div>
+</div>

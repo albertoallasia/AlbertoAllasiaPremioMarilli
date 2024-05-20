@@ -1,0 +1,39 @@
+﻿@model GestioneTerreniAgricoli.Models.Lavoratore
+
+@{
+    ViewData["Title"] = "Elimina Lavoratore";
+}
+
+<h1>Elimina Lavoratore</h1>
+
+<!-- Mostra avvisi se ci sono relazioni associate -->
+@if (ViewData["AlertMessage"] != null)
+{
+    <div class="alert alert-warning">
+        @ViewData["AlertMessage"]
+    </div>
+}
+
+<h3>Sei sicuro di voler eliminare questo lavoratore?</h3>
+<div>
+    <h4>Lavoratore</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Nome)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Nome)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Cognome)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Cognome)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.DataNascita)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.DataNascita)</dd>
+
+        <!-- Aggiungi altre proprietà del lavoratore se necessario -->
+    </dl>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="IdLavoratore" />
+        <input type="submit" value="Sì, elimina" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-secondary">Annulla</a>
+    </form>
+</div>

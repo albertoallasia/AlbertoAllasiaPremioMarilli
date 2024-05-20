@@ -1,0 +1,68 @@
+﻿@model IEnumerable<GestioneTerreniAgricoli.Models.Lavoro>
+
+@{
+    ViewData["Title"] = "Lavori";
+}
+
+<h1>Lavori</h1>
+
+
+<form asp-controller="Lavoro" asp-action="OttieniLavoriColtivazione">
+    <p>
+        <select name="searchAttribute" id="searchAttribute">
+            <option value="">Tutti</option>
+            <option value="Descrizione">Descrizione</option>
+        </select>
+        <input type="text" name="searchString" id="searchString" style="display: none;" />
+        <input type="submit" value="Filtra" id="submitButton" />
+    </p>
+</form>
+
+<script>
+    document.getElementById('searchAttribute').addEventListener('change', function () {
+        var searchString = document.getElementById('searchString');
+
+        if (this.value === 'Descrizione') {
+            searchString.style.display = 'inline';
+        } else {
+            searchString.style.display = 'none';
+        }
+    });
+</script>
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Descrizione)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataInizioLavoro)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataFineLavoro)
+            </th>
+            <th>Lavoratori Coinvolti</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descrizione)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataInizioLavoro)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataFineLavoro)
+            </td>
+            <td>
+                <a asp-action="Lavoratori" asp-route-id="@item.IdLavoro">Lavoratori</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

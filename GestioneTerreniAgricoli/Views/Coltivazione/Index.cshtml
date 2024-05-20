@@ -1,0 +1,115 @@
+﻿@model IEnumerable<GestioneTerreniAgricoli.Models.Coltivazione>
+
+@{
+    ViewData["Title"] = "Coltivazioni";
+}
+
+<h1>Coltivazioni</h1>
+
+<p>
+    <a asp-action="Create">Aggiungi Coltivazione</a>
+</p>
+
+<form asp-controller="Coltivazione" asp-action="Index">
+    <p>
+        <select name="searchAttribute" id="searchAttribute">
+            <option value="">Tutti</option>
+            <option value="NomeColtivazione">Nome Coltivazione</option>
+            <option value="QuantitaProdotta">Quantità Prodotta</option>
+            <option value="ColtivazioneTerminata">Coltivazione Terminata</option>
+            <option value="Coltura">Coltura</option>
+            <option value="Terreno">Terreno</option>
+        </select>
+        <input type="text" name="searchString" id="searchString" style="display:none;" />
+        <select name="searchBoolean" id="searchBoolean" style="display:none;">
+            <option value="true">Terminata</option>
+            <option value="false">Non terminata</option>
+        </select>
+        <span id="quantityFields" style="display:none;">
+            Quantità minima: <input type="text" name="minQuantity" />
+            Quantità massima: <input type="text" name="maxQuantity" />
+        </span>
+        <input type="submit" value="Filtra" id="submitButton" />
+    </p>
+</form>
+
+<script>
+    document.getElementById('searchAttribute').addEventListener('change', function () {
+        var quantityFields = document.getElementById('quantityFields');
+        var searchString = document.getElementById('searchString');
+        var searchBoolean = document.getElementById('searchBoolean');
+
+        if (this.value === 'QuantitaProdotta') {
+            quantityFields.style.display = 'inline';
+            searchString.style.display = 'none';
+            searchBoolean.style.display = 'none';
+        } else if (this.value === 'ColtivazioneTerminata') {
+            quantityFields.style.display = 'none';
+            searchString.style.display = 'none';
+            searchBoolean.style.display = 'inline';
+        } else if (this.value === '') {
+            quantityFields.style.display = 'none';
+            searchString.style.display = 'none';
+            searchBoolean.style.display = 'none';
+        } else {
+            quantityFields.style.display = 'none';
+            searchString.style.display = 'inline';
+            searchBoolean.style.display = 'none';
+        }
+    });
+</script>
+
+
+
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NomeColtivazione)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuantitaProdotta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ColtivazioneTerminata)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Coltura)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Terreno)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NomeColtivazione)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuantitaProdotta)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ColtivazioneTerminata)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Coltura.NomeColtura)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Terreno.NomeTerreno)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdColtivazione">Modifica</a> |
+                <a asp-action="Details" asp-route-id="@item.IdColtivazione">Dettagli</a> |
+                <a asp-action="Lavorazioni" asp-route-id="@item.IdColtivazione">Lavorazioni</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdColtivazione" class="delete-link">Cancella</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
